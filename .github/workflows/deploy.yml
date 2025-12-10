@@ -2,7 +2,7 @@ name: Build and Deploy Logspot
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main ]  # change if your default branch is not 'main'
 
 jobs:
   build-and-deploy:
@@ -20,14 +20,17 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # Generate static site into .output/public
       - name: Generate static site
         run: npx nuxi generate
 
+      # Deploy .output/public to EC2
       - name: Deploy to EC2 via SCP
         uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.DEPLOY_SERVER_HOST }}
           username: ${{ secrets.DEPLOY_SERVER_USER }}
           key: ${{ secrets.DEPLOY_SERVER_KEY }}
-          source: "dist/*"
+          source: ".output/public/*"
           target: ${{ secrets.DEPLOY_TARGET_DIR }}
+          strip_components: 2
