@@ -37,12 +37,10 @@ export default defineNuxtConfig({
     ]
   },
 
-  export default defineNuxtConfig({
   app: {
     head: {
       title: 'Sequel Technologies Changelog',
     }
   },
-})
 
 })
